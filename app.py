@@ -1,56 +1,120 @@
 import streamlit as st
 from PIL import Image
 
-# إعدادات الصفحة
-st.set_page_config(page_title="Ramadan Hesham | Portfolio", page_icon="👨‍💻", layout="wide")
+# 1. إعدادات الصفحة (يجب أن تكون أول سطر)
+st.set_page_config(page_title="Ramadan Hesham | Portfolio", page_icon="👨‍💻", layout="wide", initial_sidebar_state="expanded")
 
-# القائمة الجانبية (Sidebar)
-st.sidebar.title("طرق التواصل 📬")
-st.sidebar.write("[LinkedIn](https://linkedin.com/in/ramadanhesham)")
-st.sidebar.write("[Linktree (Cookizz)](https://linktr.ee/Cookizzz)")
-st.sidebar.write("📧 ramadanh1690@gmail.com")
-st.sidebar.write("📍 Alexandria, Egypt")
+# 2. إضافة لمسة تصميم مخصصة (Custom CSS)
+st.markdown("""
+<style>
+    .main-header { font-size: 2.8rem; font-weight: 800; color: #1E3A8A; margin-bottom: 0px; }
+    .sub-header { font-size: 1.4rem; font-weight: 500; color: #3B82F6; margin-top: 0px; }
+    .bio-text { font-size: 1.1rem; line-height: 1.7; color: #4B5563; }
+    div[data-testid="stExpander"] { border-radius: 10px; border: 1px solid #E5E7EB; }
+</style>
+""", unsafe_allow_html=True)
 
-# القسم الرئيسي (Header)
-st.title("Ramadan Hesham")
-st.subheader("Data Science Student | Microsoft Data Engineer Trainee (DEPI) | Content Creator")
-st.write("""
-أجمع بين التفكير التحليلي في هندسة البيانات وعلومها، وبين مهارات التواصل وصناعة المحتوى التقني. 
-أهدف إلى تحويل البيانات المعقدة إلى حلول مؤتمتة وقرارات ذكية لدعم الأعمال.
-""")
-
-st.divider()
-
-# قسم الخبرات (Experience)
-st.header("الخبرات المهنية 💼")
-col1, col2 = st.columns(2)
-
-with col1:
-    st.write("### Content Creator @ Ghawy AI")
-    st.write("إعداد وإنتاج محتوى مرئي قصير لتبسيط مفاهيم الذكاء الاصطناعي وتعلم الآلة.")
+# 3. القائمة الجانبية (Sidebar)
+with st.sidebar:
+    st.header("طرق التواصل 📬")
+    st.markdown("[🔗 **LinkedIn Profile**](https://linkedin.com/in/ramadanhesham)")
+    st.markdown("[🌳 **Linktree (Cookizz)**](https://linktr.ee/Cookizzz)")
+    st.markdown("📧 **ramadanh1690@gmail.com**")
+    st.markdown("📍 **Alexandria, Egypt**")
     
-    st.write("### Microsoft Data Engineering Trainee @ DEPI")
-    st.write("التدريب على هندسة البيانات الحديثة باستخدام تقنيات مثل Azure، وSQL، وData Pipelines.")
-
-with col2:
-    st.write("### Co-Founder & Content Creator @ Cookizz")
-    st.write("إدارة التخطيط وكتابة السكريبتات وإنتاج الفيديوهات التقنية للشباب.")
+    st.divider()
     
-    st.write("### Vice Head of Media & Marketing @ Project Engine")
-    st.write("إدارة الحملات الرقمية للفعاليات التقنية الكبرى مثل حدث CTRL A.")
+    # تفعيل زر تحميل الـ CV الحقيقي
+    st.info("💡 يمكنك تحميل سيرتي الذاتية من هنا")
+    try:
+        with open("Ramadan_Hesham_CV.pdf", "rb") as file:
+            st.download_button(
+                label="📄 تحميل السيرة الذاتية (CV)",
+                data=file,
+                file_name="Ramadan_Hesham_CV.pdf",
+                mime="application/pdf"
+            )
+    except FileNotFoundError:
+        st.error("ملف السيرة الذاتية غير موجود. تأكد من رفعه باسم Ramadan_Hesham_CV.pdf")
+
+# 4. القسم الرئيسي (Hero Section)
+col_text, col_img = st.columns([2.5, 1], gap="large")
+
+with col_text:
+    st.markdown('<p class="main-header">Ramadan Hesham</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Data Science Student | Microsoft Data Engineer Trainee | Content Creator</p>', unsafe_allow_html=True)
+    st.markdown('<p class="bio-text">أجمع بين التفكير التحليلي في هندسة البيانات وعلومها، وبين مهارات التواصل وصناعة المحتوى التقني. أهدف إلى تحويل البيانات المعقدة إلى حلول مؤتمتة وقرارات ذكية لدعم الأعمال وصناعة تأثير حقيقي.</p>', unsafe_allow_html=True)
+
+with col_img:
+    # تفعيل الصورة الشخصية
+    try:
+        img = Image.open("profile.jpg")
+        st.image(img, use_column_width=True)
+    except FileNotFoundError:
+        st.warning("الصورة الشخصية غير موجودة. تأكد من رفعها باسم profile.jpg")
 
 st.divider()
 
-# قسم المهارات (Skills)
-st.header("المهارات التقنية 🛠️")
-st.write("- **Programming & DBs:** Python, SQL, Java, C++")
-st.write("- **Data Engineering & Cloud:** Microsoft Azure, AWS, Data Warehousing, ETL, Data Modeling")
-st.write("- **Tools:** Pandas, NumPy, Scikit-Learn, Streamlit")
-st.write("- **Media:** Video Production, Digital Marketing, Scriptwriting")
+# 5. تنظيم المحتوى باستخدام الـ Tabs (علامات التبويب)
+tab1, tab2, tab3 = st.tabs(["💼 الخبرات المهنية", "🛠️ المهارات التقنية", "🎓 التعليم"])
 
-st.divider()
+# --- التبويب الأول: الخبرات ---
+with tab1:
+    st.subheader("مسيرتي المهنية والمشاريع")
+    
+    with st.expander("🎥 Content Creator @ Ghawy AI (Aug 2026 - Present)", expanded=True):
+        st.write("""
+        - إعداد وإنتاج محتوى مرئي قصير لتبسيط مفاهيم الذكاء الاصطناعي وتعلم الآلة.
+        - التعاون مع فرق التسويق لبناء استراتيجية المحتوى وزيادة تفاعل المجتمع.
+        """)
+        
+    with st.expander("☁️ Microsoft Data Engineering Trainee @ DEPI (Jul 2026 - Present)"):
+        st.write("""
+        - التدريب المتعمق على هندسة البيانات الحديثة.
+        - تطبيق عملي على تقنيات مثل **Azure Data Services، SQL، Data Warehousing، و ETL Processes**.
+        """)
 
-# قسم التعليم (Education)
-st.header("التعليم المتواصل 🎓")
-st.write("**B.Sc. in Data Science** - Alexandria University (2024 - 2028)")
-st.write("**STEM High School Diploma** - Kafr El-Sheikh (2021 - 2024)")
+    with st.expander("🚀 Co-Founder & Content Creator @ Cookizz (2024 - Present)"):
+        st.write("""
+        - المشاركة في تأسيس قناة تعليمية لتقديم محتوى تقني ومهاري للشباب المصري.
+        - إدارة التخطيط، كتابة السكريبتات، الإنتاج، واستراتيجيات التسويق الرقمي.
+        """)
+
+    with st.expander("📢 Vice Head of Media & Marketing @ Project Engine (2025 - 2026)"):
+        st.write("""
+        - إدارة الحملات الرقمية للفعاليات التقنية الكبرى مثل حدث CTRL A.
+        - الإشراف على فرق صناعة المحتوى والتصميم لضمان وصول رسالة تقنية مبسطة للطلاب.
+        """)
+
+# --- التبويب الثاني: المهارات ---
+with tab2:
+    st.subheader("الأدوات والتقنيات")
+    
+    col_s1, col_s2, col_s3 = st.columns(3)
+    
+    with col_s1:
+        st.success("💻 البرمجة وقواعد البيانات")
+        st.write("- Python\n- SQL\n- Java\n- C++\n- R")
+        
+    with col_s2:
+        st.info("☁️ هندسة البيانات (Data Engineering)")
+        st.write("- Microsoft Azure\n- AWS (Cloud Foundations)\n- Data Warehousing\n- ETL & Data Pipelines")
+        
+    with col_s3:
+        st.warning("🎬 تحليل البيانات وصناعة المحتوى")
+        st.write("- Pandas, NumPy, Scikit-Learn\n- Power BI & Data Viz\n- Video Production & Editing\n- Scriptwriting & Storytelling")
+
+# --- التبويب الثالث: التعليم ---
+with tab3:
+    st.subheader("الخلفية الأكاديمية")
+    
+    st.markdown("""
+    **🎓 B.Sc. in Data Science** | *Alexandria University (2024 - 2028)*
+    - **أبرز المقررات:** Data Structures, Database Systems (SQL), Big Data Analytics, Machine Learning, Advanced Calculus.
+    - **الأنشطة:** عضو في ECPC FCDS، GDG On-Campus، و HackerRank.
+    
+    ---
+    
+    **🔬 STEM High School Diploma** | *STEM School Kafr El-Sheikh (2021 - 2024)*
+    - نظام دراسي مكثف يعتمد على البحث العلمي، التفكير النقدي، وإنجاز مشاريع تخرج (Capstones) متعددة التخصصات.
+    """)
